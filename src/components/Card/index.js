@@ -1,7 +1,11 @@
+import styles from './Card.module.scss'
+
+console.log(styles)
+
 function Card(props) {
     return(
-        <div className="card">
-            <div className="favorite">
+        <div className={styles.card}>
+            <div className={styles.favorite}>
                 <img src="/img/heart.svg" alt="Unliked"/>
             </div>
 
@@ -20,4 +24,4 @@ function Card(props) {
     );
 }
 
-export default Card;
+export default Card ;

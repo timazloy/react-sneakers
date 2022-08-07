@@ -29,7 +29,7 @@ function App() {
             {arr.map(item => (
                 <Card name={item.name} price={item.price} img={item.img}/>
             ))}
-            {/*<Card/>*/}
+            {/*<Index/>*/}
         </div>
       </div>
     </div>

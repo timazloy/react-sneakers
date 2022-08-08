@@ -27,7 +27,7 @@ function App() {
 
         <div className="d-flex justify-between">
             {arr.map(item => (
-                <Card name={item.name} price={item.price} img={item.img}/>
+                <Card name={item.name} price={item.price} img={item.img} onPlus={() => console.log('Нажали плюс')} onFavorite={() => console.log('Добавили в закладки')}/>
             ))}
             {/*<Index/>*/}
         </div>

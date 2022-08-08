@@ -5,7 +5,7 @@ console.log(styles)
 function Card(props) {
     return(
         <div className={styles.card}>
-            <div className={styles.favorite}>
+            <div className={styles.favorite} onClick={props.onFavorite}>
                 <img src="/img/heart.svg" alt="Unliked"/>
             </div>
 
@@ -16,7 +16,7 @@ function Card(props) {
                     <span>Цена:</span>
                     <b>{props.price}</b>
                 </div>
-                <button className="button">
+                <button className="button" onClick={props.onPlus}>
                     <img width={11} height={11} src="/img/plus.svg" alt="icon"/>
                 </button>
             </div>

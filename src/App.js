@@ -1,20 +1,26 @@
+import React from "react";
 import './App.css';
 import Card from './components/Card'
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 
-const arr = [
-    {name: 'Мужские Кроссовки Nike Blazer Mid Suede', price: 12999, img: '/img/sneakers/1.jpg'},
-    {name: 'Мужские Кроссовки Nike Air Max 270', price: 15600, img: '/img/sneakers/2.jpg'},
-    {name: 'Мужские Кроссовки Nike Blazer Mid Suede', price: 8499, img: '/img/sneakers/3.jpg'},
-    {name: 'Кроссовки Puma X Aka Boku Future Rider', price: 8999, img: '/img/sneakers/4.jpg'}
-]
 
 function App() {
+    const [cartOpened, setCartOpened] = React.useState(false);
+    const [items, setItems] = React.useState([]);
+
+    React.useEffect(() => {
+        fetch('https://62f2672bb1098f15081212c2.mockapi.io/items').then((res) => {
+            return res.json();
+        }).then((json) => {
+            setItems(json)
+        })
+    }, []);
+
   return (
     <div className="wrapper clear">
-      <Drawer/>
-      <Header/>
+      {cartOpened && <Drawer onClose={() => setCartOpened(false)} />}
+      <Header onClickCart={() => setCartOpened(true)} />
 
       <div className="content p-40">
         <div className="d-flex align-center mb-40 justify-between">
@@ -25,8 +31,8 @@ function App() {
           </div>
         </div>
 
-        <div className="d-flex justify-between">
-            {arr.map(item => (
+        <div className="d-flex justify-between flex-wrap">
+            {items.map(item => (
                 <Card name={item.name} price={item.price} img={item.img} onPlus={() => console.log('Нажали плюс')} onFavorite={() => console.log('Добавили в закладки')}/>
             ))}
             {/*<Index/>*/}

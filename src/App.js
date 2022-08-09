@@ -8,6 +8,7 @@ import Drawer from "./components/Drawer";
 function App() {
     const [cartOpened, setCartOpened] = React.useState(false);
     const [items, setItems] = React.useState([]);
+    const [cartItems, setCartItems] = React.useState([]);
 
     React.useEffect(() => {
         fetch('https://62f2672bb1098f15081212c2.mockapi.io/items').then((res) => {
@@ -17,9 +18,15 @@ function App() {
         })
     }, []);
 
+    const onAddToCart = (obj) => {
+        setCartItems([...cartItems,  obj])
+    }
+
+    console.log(cartItems)
+
   return (
     <div className="wrapper clear">
-      {cartOpened && <Drawer onClose={() => setCartOpened(false)} />}
+      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} />}
       <Header onClickCart={() => setCartOpened(true)} />
 
       <div className="content p-40">
@@ -33,7 +40,7 @@ function App() {
 
         <div className="d-flex justify-between flex-wrap">
             {items.map(item => (
-                <Card name={item.name} price={item.price} img={item.img} onPlus={() => console.log('Нажали плюс')} onFavorite={() => console.log('Добавили в закладки')}/>
+                <Card name={item.name} price={item.price} img={item.img} onPlus={(obj) => onAddToCart(obj)} onFavorite={() => console.log('Добавили в закладки')}/>
             ))}
             {/*<Index/>*/}
         </div>

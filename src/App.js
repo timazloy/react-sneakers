@@ -11,6 +11,7 @@ function App() {
     const [items, setItems] = React.useState([]);
     const [searchValue, setSearchValue] = React.useState('');
     const [cartItems, setCartItems] = React.useState([]);
+    const [favorites, setFavorites] = React.useState([]);
 
     React.useEffect(() => {
         axios.get('https://62f2672bb1098f15081212c2.mockapi.io/items').then(res => {
@@ -25,6 +26,17 @@ function App() {
         axios.post('https://62f2672bb1098f15081212c2.mockapi.io/cart', obj);
         setCartItems([...cartItems,  obj])
     }
+    const onAddToFavorite = (obj) => {
+        axios.post('https://62f2672bb1098f15081212c2.mockapi.io/favorites', obj);
+        setFavorites([...cartItems,  obj])
+    }
+
+    const onRemoveItem = (id) => {
+        console.log(id)
+        axios.delete(`https://62f2672bb1098f15081212c2.mockapi.io/cart/${id}`);
+        setCartItems(prev => prev.filter(item => item.id !== id))
+
+    }
 
     const onChangeSearchInput = (e) => {
         setSearchValue(e.target.value)
@@ -33,7 +45,7 @@ function App() {
 
   return (
     <div className="wrapper clear">
-      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} />}
+      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />}
       <Header onClickCart={() => setCartOpened(true)} />
 
       <div className="content p-40">
@@ -50,7 +62,7 @@ function App() {
             {items
                 .filter((item) => item.name.toLowerCase().includes(searchValue))
                 .map((item, index) => (
-                    <Card key={index} name={item.name} price={item.price} img={item.img} onPlus={(obj) => onAddToCart(obj)} onFavorite={() => console.log('Добавили в закладки')}/>
+                    <Card key={index} name={item.name} price={item.price} img={item.img} onPlus={(obj) => onAddToCart(obj)} onFavorite={(obj) => onAddToFavorite(obj)}/>
                 ))
             }
         </div>

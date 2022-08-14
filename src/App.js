@@ -33,13 +33,18 @@ function App() {
         setCartItems((prev) =>[...prev,  obj])
     }
     const onAddToFavorite = async (obj) => {
-        if (favorites.find((favObj) => favObj.id === obj.id)) {
-            axios.delete(`https://62f2672bb1098f15081212c2.mockapi.io/favorites/${obj.id}`)
-            setFavorites((prev) => prev.filter((item) => item.id !== obj.id))
-        } else {
-            const { data } = await axios.post('https://62f2672bb1098f15081212c2.mockapi.io/favorites', obj);
-            setFavorites((prev) => [...prev,  data])
+        try {
+            if (favorites.find((favObj) => favObj.id === obj.id)) {
+                axios.delete(`https://62f2672bb1098f15081212c2.mockapi.io/favorites/${obj.id}`)
+                setFavorites((prev) => prev.filter((item) => item.id !== obj.id))
+            } else {
+                const { data } = await axios.post('https://62f2672bb1098f15081212c2.mockapi.io/favorites', obj);
+                setFavorites((prev) => [...prev,  data])
+            }
+        } catch (error) {
+            alert("Не удалось добавить в фавориты")
         }
+
 
     }
 

@@ -4,6 +4,14 @@ import {Link, NavLink} from "react-router-dom";
 function Header(props) {
     return(
         <header className="d-flex justify-between align-center p-40">
+
+            {/*<ul>*/}
+            {/*    <li><NavLink to="/">Main</NavLink></li>*/}
+            {/*    <li><NavLink to="/about">About</NavLink></li>*/}
+            {/*    <li><NavLink to="/users">Users</NavLink></li>*/}
+            {/*</ul>*/}
+
+
             <Link to="/">
                 <div className="d-flex align-center">
                     <img width={40} height={40} src="/img/logo.png" alt="logo"/>
@@ -20,7 +28,7 @@ function Header(props) {
                     <span>1205 руб.</span>
                 </li>
 
-                <li onClick={props.onClickCart} className="mr-30 cu-p">
+                <li className="mr-30 cu-p">
                     <Link to="/favorites">
                         <img src="/img/favorite.svg" alt="favorites"/>
                     </Link>

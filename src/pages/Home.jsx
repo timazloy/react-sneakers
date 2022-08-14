@@ -17,7 +17,14 @@ function Home({items,searchValue,setSearchValue,onChangeSearchInput,onAddToFavor
                 {items
                     .filter((item) => item.name.toLowerCase().includes(searchValue))
                     .map((item, index) => (
-                        <Card key={index} name={item.name} price={item.price} img={item.img} onPlus={(obj) => onAddToCart(obj)} onFavorite={(obj) => onAddToFavorite(obj)}/>
+                        <Card key={index}
+                              // name={item.name}
+                              // price={item.price}
+                              // img={item.img}
+                              onPlus={(obj) => onAddToCart(obj)}
+                              onFavorite={(obj) => onAddToFavorite(obj)}
+                              {...item}
+                        />
                     ))
                 }
             </div>

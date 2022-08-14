@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 import axios from "axios";
 import Home from './pages/Home'
-import { BrowserRouter as Routes, Route, Router, Link} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Favorites from "./pages/Favorites";
 
 
@@ -23,21 +23,29 @@ function App() {
         axios.get('https://62f2672bb1098f15081212c2.mockapi.io/cart').then(res => {
             setCartItems(res.data)
         })
+        axios.get('https://62f2672bb1098f15081212c2.mockapi.io/favorites').then(res => {
+            setFavorites(res.data)
+        })
     }, []);
 
     const onAddToCart = (obj) => {
         axios.post('https://62f2672bb1098f15081212c2.mockapi.io/cart', obj);
-        setCartItems([...cartItems,  obj])
+        setCartItems((prev) =>[...prev,  obj])
     }
-    const onAddToFavorite = (obj) => {
-        axios.post('https://62f2672bb1098f15081212c2.mockapi.io/favorites', obj);
-        setFavorites([...cartItems,  obj])
+    const onAddToFavorite = async (obj) => {
+        if (favorites.find((favObj) => favObj.id === obj.id)) {
+            axios.delete(`https://62f2672bb1098f15081212c2.mockapi.io/favorites/${obj.id}`)
+            setFavorites((prev) => prev.filter((item) => item.id !== obj.id))
+        } else {
+            const { data } = await axios.post('https://62f2672bb1098f15081212c2.mockapi.io/favorites', obj);
+            setFavorites((prev) => [...prev,  data])
+        }
+
     }
 
     const onRemoveItem = (id) => {
-        console.log(id)
         axios.delete(`https://62f2672bb1098f15081212c2.mockapi.io/cart/${id}`);
-        setCartItems(prev => prev.filter(item => item.id !== id))
+        setCartItems((prev) => prev.filter(item => item.id !== id))
 
     }
 
@@ -50,13 +58,16 @@ function App() {
     <div className="wrapper clear">
       {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />}
 
+
     <Router>
         <Header onClickCart={() => setCartOpened(true)} />
         <Routes>
-            <Route path="/" element={<Home items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
-            <Route path="/favorites" element={<Favorites/>}/>
+            <Route exact path="/" element={<Home items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
+            <Route exact path="/favorites" element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite}/>}/>
         </Routes>
     </Router>
+
+
 
 
 

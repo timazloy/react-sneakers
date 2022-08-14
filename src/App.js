@@ -1,9 +1,12 @@
 import React from "react";
 import './App.css';
-import Card from './components/Card'
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
 import axios from "axios";
+import Home from './pages/Home'
+import { BrowserRouter as Routes, Route, Router, Link} from "react-router-dom";
+import Favorites from "./pages/Favorites";
+
 
 
 function App() {
@@ -46,27 +49,18 @@ function App() {
   return (
     <div className="wrapper clear">
       {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />}
-      <Header onClickCart={() => setCartOpened(true)} />
 
-      <div className="content p-40">
-        <div className="d-flex align-center mb-40 justify-between">
-          <h1>{searchValue ? `Поиск по запросу "${searchValue}"`: 'Все кроссовки'}</h1>
-          <div className="search-block d-flex">
-            <img src="/img/search.svg" alt="Search"/>
-            <input placeholder="Поиск..." onChange={onChangeSearchInput} value={searchValue}/>
-            {searchValue && <img onClick={() => setSearchValue('')} className="removeBtn clearInput" src="/img/btn-remove.svg" alt="Remove"/>}
-          </div>
-        </div>
+    <Router>
+        <Header onClickCart={() => setCartOpened(true)} />
+        <Routes>
+            <Route path="/" element={<Home items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
+            <Route path="/favorites" element={<Favorites/>}/>
+        </Routes>
+    </Router>
 
-        <div className="d-flex justify-between flex-wrap">
-            {items
-                .filter((item) => item.name.toLowerCase().includes(searchValue))
-                .map((item, index) => (
-                    <Card key={index} name={item.name} price={item.price} img={item.img} onPlus={(obj) => onAddToCart(obj)} onFavorite={(obj) => onAddToFavorite(obj)}/>
-                ))
-            }
-        </div>
-      </div>
+
+
+
     </div>
   );
 }

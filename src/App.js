@@ -29,8 +29,12 @@ function App() {
     }, []);
 
     const onAddToCart = (obj) => {
-        axios.post('https://62f2672bb1098f15081212c2.mockapi.io/cart', obj);
-        setCartItems((prev) =>[...prev,  obj])
+        if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+            setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
+        } else {
+            axios.post('https://62f2672bb1098f15081212c2.mockapi.io/cart', obj);
+            setCartItems((prev) =>[...prev,  obj])
+        }
     }
     const onAddToFavorite = async (obj) => {
         try {

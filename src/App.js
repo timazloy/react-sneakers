@@ -17,15 +17,22 @@ function App() {
     const [favorites, setFavorites] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('https://62f2672bb1098f15081212c2.mockapi.io/items').then(res => {
-            setItems(res.data)
-        })
-        axios.get('https://62f2672bb1098f15081212c2.mockapi.io/cart').then(res => {
-            setCartItems(res.data)
-        })
-        axios.get('https://62f2672bb1098f15081212c2.mockapi.io/favorites').then(res => {
-            setFavorites(res.data)
-        })
+        async function fetchData() {
+            const cartResponse = await axios.get('https://62f2672bb1098f15081212c2.mockapi.io/cart');
+            const favoriteResponse = await axios.get('https://62f2672bb1098f15081212c2.mockapi.io/favorites');
+            const itemsResponse = await axios.get('https://62f2672bb1098f15081212c2.mockapi.io/items');
+
+            // axios.get('https://62f2672bb1098f15081212c2.mockapi.io/cart').then(res => {
+            // })
+            // axios.get('https://62f2672bb1098f15081212c2.mockapi.io/favorites').then(res => {
+            // })
+            setCartItems(cartResponse.data)
+            setFavorites(favoriteResponse.data)
+            setItems(itemsResponse.data)
+
+        }
+
+        fetchData();
     }, []);
 
     const onAddToCart = (obj) => {
@@ -72,7 +79,7 @@ function App() {
     <Router>
         <Header onClickCart={() => setCartOpened(true)} />
         <Routes>
-            <Route exact path="/" element={<Home items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
+            <Route exact path="/" element={<Home cartItems={cartItems} items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
             <Route exact path="/favorites" element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite}/>}/>
         </Routes>
     </Router>

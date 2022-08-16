@@ -15,12 +15,14 @@ function App() {
     const [searchValue, setSearchValue] = React.useState('');
     const [cartItems, setCartItems] = React.useState([]);
     const [favorites, setFavorites] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
         async function fetchData() {
             const cartResponse = await axios.get('https://62f2672bb1098f15081212c2.mockapi.io/cart');
             const favoriteResponse = await axios.get('https://62f2672bb1098f15081212c2.mockapi.io/favorites');
             const itemsResponse = await axios.get('https://62f2672bb1098f15081212c2.mockapi.io/items');
+            setIsLoading(false)
 
             // axios.get('https://62f2672bb1098f15081212c2.mockapi.io/cart').then(res => {
             // })
@@ -79,7 +81,7 @@ function App() {
     <Router>
         <Header onClickCart={() => setCartOpened(true)} />
         <Routes>
-            <Route exact path="/" element={<Home cartItems={cartItems} items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
+            <Route exact path="/" element={<Home isLoading={isLoading} cartItems={cartItems} items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
             <Route exact path="/favorites" element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite}/>}/>
         </Routes>
     </Router>

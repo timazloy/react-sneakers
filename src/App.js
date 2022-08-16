@@ -30,6 +30,7 @@ function App() {
 
     const onAddToCart = (obj) => {
         if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+            axios.delete(`https://62f2672bb1098f15081212c2.mockapi.io/card/${obj.id}`)
             setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
         } else {
             axios.post('https://62f2672bb1098f15081212c2.mockapi.io/cart', obj);
@@ -46,7 +47,7 @@ function App() {
                 setFavorites((prev) => [...prev,  data])
             }
         } catch (error) {
-            alert("Не удалось добавить в фавориты")
+            // alert("Не удалось добавить в фавориты")
         }
 
 

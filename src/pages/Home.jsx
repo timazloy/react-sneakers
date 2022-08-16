@@ -24,6 +24,7 @@ function Home({items,cartItems,searchValue,setSearchValue,onChangeSearchInput,on
                               onPlus={(obj) => onAddToCart(obj)}
                               onFavorite={(obj) => onAddToFavorite(obj)}
                               added={cartItems.some(obj => Number(obj.id) === Number(item.id))}
+                              loading={false}
                               {...item}
                         />
                     ))

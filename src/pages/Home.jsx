@@ -1,12 +1,11 @@
 import Card from "../components/Card";
-import React from "@types/react";
-import AppContext from "./context";
-import AppContext from '../pages/context'
+import React from "react";
+import AppContext from "../context";
 
 
-const {isItemAdded} = React.useContext(AppContext);
 
-function Home({isLoading,items,cartItems,searchValue,setSearchValue,onChangeSearchInput,onAddToFavorite,onAddToCart}) {
+
+function Home({isLoading,items,searchValue,setSearchValue,onChangeSearchInput,onAddToFavorite,onAddToCart}) {
     const renderItems = () => {
         const filtredItems = items.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase()))
         return (isLoading ? [...Array(10)] : filtredItems)
@@ -17,7 +16,6 @@ function Home({isLoading,items,cartItems,searchValue,setSearchValue,onChangeSear
                     // img={item.img}
                       onPlus={(obj) => onAddToCart(obj)}
                       onFavorite={(obj) => onAddToFavorite(obj)}
-                      added={isItemAdded(item.id)}
                       loading={isLoading}
                       {...item}
                 />

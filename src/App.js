@@ -6,7 +6,7 @@ import axios from "axios";
 import Home from './pages/Home'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Favorites from "./pages/Favorites";
-import AppContext from "./pages/context";
+import AppContext from "./context";
 
 
 function App() {

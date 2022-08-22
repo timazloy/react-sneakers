@@ -6,7 +6,7 @@ import axios from "axios";
 import Home from './pages/Home'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Favorites from "./pages/Favorites";
-
+import AppContext from "./pages/context";
 
 
 function App() {
@@ -72,26 +72,32 @@ function App() {
         setSearchValue(e.target.value)
     }
 
+    const isItemAdded = (id) => {
+      return cartItems.some(obj => Number(obj.id) === Number(id))
+    }
 
   return (
-    <div className="wrapper clear">
-      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />}
+      <AppContext.Provider value={{favorites, cartItems, items, isItemAdded}}>
+          <div className="wrapper clear">
+              {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened(false)} onRemove={onRemoveItem} />}
 
 
-    <Router>
-        <Header onClickCart={() => setCartOpened(true)} />
-        <Routes>
-            <Route exact path="/" element={<Home isLoading={isLoading} cartItems={cartItems} items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
-            <Route exact path="/favorites" element={<Favorites items={favorites} onAddToFavorite={onAddToFavorite}/>}/>
-        </Routes>
-    </Router>
+              <Router>
+                  <Header onClickCart={() => setCartOpened(true)} />
+                  <Routes>
+                      <Route exact path="/" element={<Home isLoading={isLoading} cartItems={cartItems} items={items} searchValue={searchValue} setSearchValue={setSearchValue} onChangeSearchInput={onChangeSearchInput} onAddToFavorite={onAddToFavorite} onAddToCart={onAddToCart}/>}/>
+                      <Route exact path="/favorites" element={<Favorites onAddToFavorite={onAddToFavorite}/>}/>
+                  </Routes>
+              </Router>
 
 
 
 
 
 
-    </div>
+          </div>
+      </AppContext.Provider>
+
   );
 }
 
